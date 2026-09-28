@@ -1,0 +1,7 @@
+{
+  "name": "Smart Academic Locker & Intelligent Student Management System",
+  "description": "Centralized Smart Academic Locker system with live camera QR scanning, academic requirement engine, trained Random Forest forgetting prediction ML model, damaged QR recovery, bag weight optimization, and multilingual AI voice assistant.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

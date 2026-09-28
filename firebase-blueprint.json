@@ -1,0 +1,205 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account for students, teachers, or administrators",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["STUDENT", "TEACHER", "ADMIN"] },
+        "password": { "type": "string" },
+        "department": { "type": "string" },
+        "avatar": { "type": "string" },
+        "studentId": { "type": "string" },
+        "lockerId": { "type": "string" },
+        "classId": { "type": "string" },
+        "section": { "type": "string" },
+        "teacherType": { "type": "string", "enum": ["CLASS_TEACHER", "SUBJECT_TEACHER"] },
+        "assignedClassId": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "SchoolClass": {
+      "title": "SchoolClass",
+      "description": "Academic classroom section",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "grade": { "type": "number" },
+        "section": { "type": "string" },
+        "studentCount": { "type": "number" },
+        "classTeacherId": { "type": "string" },
+        "classTeacherName": { "type": "string" },
+        "roomNumber": { "type": "string" }
+      },
+      "required": ["id", "name", "grade", "section"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student record with locker association and miss statistics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "classId": { "type": "string" },
+        "section": { "type": "string" },
+        "lockerNumber": { "type": "string" },
+        "rollNumber": { "type": "number" },
+        "previousMisses": { "type": "number" },
+        "totalScans": { "type": "number" },
+        "subjectMissRates": { "type": "object" }
+      },
+      "required": ["id", "studentId", "name", "classId", "lockerNumber"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "Textbook, notebook, or laboratory manual",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "bookName": { "type": "string" },
+        "subject": { "type": "string" },
+        "classLevel": { "type": "number" },
+        "type": { "type": "string" },
+        "weightKg": { "type": "number" },
+        "coverColor": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "bookName", "subject", "classLevel", "weightKg"]
+    },
+    "Locker": {
+      "title": "Locker",
+      "description": "Smart school locker status and book inventory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "lockerNumber": { "type": "string" },
+        "assignedStudentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "classId": { "type": "string" },
+        "status": { "type": "string", "enum": ["LOCKED", "OPEN"] },
+        "lastOpenedAt": { "type": "string" },
+        "currentBookIds": { "type": "array" }
+      },
+      "required": ["id", "lockerNumber", "assignedStudentId", "status"]
+    },
+    "Homework": {
+      "title": "Homework",
+      "description": "Homework assignment created by teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "classId": { "type": "string" },
+        "subject": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "assignedDate": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "requiredBookIds": { "type": "array" },
+        "requiredBookNames": { "type": "array" },
+        "teacherId": { "type": "string" },
+        "teacherName": { "type": "string" }
+      },
+      "required": ["id", "classId", "subject", "title", "dueDate"]
+    },
+    "TestItem": {
+      "title": "TestItem",
+      "description": "Scheduled exam or unit test",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "classId": { "type": "string" },
+        "subject": { "type": "string" },
+        "testTitle": { "type": "string" },
+        "chapterTopic": { "type": "string" },
+        "testDate": { "type": "string" },
+        "requiredBookIds": { "type": "array" },
+        "requiredBookNames": { "type": "array" },
+        "teacherId": { "type": "string" },
+        "teacherName": { "type": "string" }
+      },
+      "required": ["id", "classId", "subject", "testTitle", "testDate"]
+    },
+    "InventoryLog": {
+      "title": "InventoryLog",
+      "description": "Transaction scan log when placing or removing items from lockers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "lockerId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "bookName": { "type": "string" },
+        "subject": { "type": "string" },
+        "action": { "type": "string", "enum": ["ADDED", "REMOVED"] },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "studentId", "lockerId", "bookId", "action", "timestamp"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "System or teacher alert sent to students or teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "targetRole": { "type": "string" },
+        "targetUserId": { "type": "string" },
+        "targetClassId": { "type": "string" },
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "read": { "type": "boolean" },
+        "severity": { "type": "string" }
+      },
+      "required": ["id", "targetRole", "title", "message", "timestamp", "read"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "entity": "User",
+      "description": "User accounts"
+    },
+    "/classes/{classId}": {
+      "entity": "SchoolClass",
+      "description": "Classroom sections"
+    },
+    "/students/{studentDocId}": {
+      "entity": "Student",
+      "description": "Enrolled students"
+    },
+    "/books/{bookId}": {
+      "entity": "Book",
+      "description": "Textbook and notebook catalogue"
+    },
+    "/lockers/{lockerId}": {
+      "entity": "Locker",
+      "description": "Smart lockers and inventory status"
+    },
+    "/timetables/{timetableDocId}": {
+      "entity": "TimetableSlot",
+      "description": "Timetable schedules"
+    },
+    "/homework/{homeworkId}": {
+      "entity": "Homework",
+      "description": "Homework assignments"
+    },
+    "/tests/{testId}": {
+      "entity": "TestItem",
+      "description": "Scheduled unit tests and exams"
+    },
+    "/inventoryLogs/{logId}": {
+      "entity": "InventoryLog",
+      "description": "Locker inventory scans"
+    },
+    "/notifications/{notificationId}": {
+      "entity": "NotificationItem",
+      "description": "Alert notifications"
+    }
+  }
+}
